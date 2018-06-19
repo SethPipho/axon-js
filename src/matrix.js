@@ -233,6 +233,30 @@ export class Mx {
         return sum
     }
 
+    static colSum(input) {
+
+        let sum = Mx.fromDims(1, input.cols)
+
+        for (let row = 0; row < input.rows; row++) {
+            for (let col = 0; col < input.cols; col++) {
+                sum.array[col] += input.array[input.cols * row + col] 
+            }
+        }
+
+        return sum
+    }
+
+    static scaleCols(input,scale){
+        let result = Mx.fromDims(input.rows, input.cols)
+
+        for (let row = 0; row < input.rows; row++) {
+            for (let col = 0; col < input.cols; col++) {
+               result.array[result.cols * row + col] = input.array[input.cols * row + col] * scale.array[col] 
+            }
+        }
+        return result
+    }
+
 
     static max(input) {
 

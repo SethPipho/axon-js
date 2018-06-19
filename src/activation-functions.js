@@ -21,7 +21,7 @@ export const ActivationFunctions = {
         }
      
         let x_exp = Mx.map(input, (x) => Math.pow(Math.E, x ))
-        let x_exp_sum = Mx.sum(x_exp)
-        return Mx.scale(x_exp, 1 / x_exp_sum)
+        let x_exp_sum = Mx.colSum(x_exp)
+        return Mx.scaleCols(x_exp, Mx.map(x_exp_sum,(x) => 1/x) )
     }
 }

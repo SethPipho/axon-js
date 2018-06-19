@@ -272,7 +272,7 @@ let params = {
     hidden_size: 64,
     hidden_activation:'sigmoid',
     output_size: 10,
-    output_activation: 'sigmoid'
+    output_activation: 'softmax'
 }
 
 let learn_rate = 1
@@ -283,7 +283,7 @@ let batch_size = 32
 
 function train(){
     console.log("loading data")
-    Papa.parse("./mnist/mnist_train.csv", {
+    Papa.parse("../mnist/mnist_train.csv", {
         download:true,
         complete: (result) => {
              
@@ -308,7 +308,7 @@ function train(){
 
 function test(){
     console.log("loading data")
-    Papa.parse("./mnist/mnist_test.csv", {
+    Papa.parse("../mnist/mnist_test.csv", {
         download:true,
         complete: (result) => {
               console.log("testing...")
