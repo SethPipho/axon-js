@@ -27,15 +27,7 @@ let y = [
             [1,0]
         ]
 
-
 nn.train(x,y, 3, 100, 'cross-entropy', 4)
 
 let prediction = nn.predict(x)
-
-console.log(prediction )
-
-//console.log(Axon.Mx.colSum(Axon.Mx.fromArray(x)).toString())
-
-//console.log(Axon.Mx.scaleCols(Axon.Mx.fromArray(x), Axon.Mx.fromArray([[.5,.3]])).toString(2))
-
-//console.log(Axon.Mx.rowSum(Axon.Mx.fromArray(x)).toString(2))
+console.log(prediction)
