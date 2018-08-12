@@ -1,15 +1,17 @@
 {
   "name": "axon-js",
   "version": "0.0.1",
-  "description": "A toy neural network for the browser",
+  "description": "A toy Machine Learning library in js",
   "main": "src/index.js",
   "scripts": {
     "build": "rollup -c",
-    "dev": "rollup -c -w"
+    "dev": "rollup -c -w",
+    "test": "jest"
   },
   "author": "Seth Pipho",
   "license": "ISC",
   "devDependencies": {
+    "jest": "^23.5.0",
     "rollup": "^0.60.7"
   }
 }

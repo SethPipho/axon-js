@@ -1,10 +1,12 @@
-export class Mx {
+/**
+ * Basic 2D Matrix math class
+ */
 
+export class Mx {
     constructor(rows, cols) {
         this.rows = rows
         this.cols = cols
         this.array = Array(rows * cols).fill(0)
-        //this.array = new Float32Array(rows * cols)
     }
 
     static fromArray(arr) {
@@ -58,87 +60,63 @@ export class Mx {
                 result[row].push(this.array[row * this.cols + col])
             }
         }
-
         return result
     }
 
-    static add(a, b, _result) {
-
+    static add(a, b) {
+        //identical dimesions
         if (a.rows == b.rows && a.cols == b.cols) {
-            let result = _result || Mx.fromDims(a.rows, a.cols)
-
+            let result = Mx.fromDims(a.rows, a.cols)
             for (let i = 0; i < a.rows * a.cols; i++) {
                 result.array[i] = a.array[i] + b.array[i]
             }
-
             return result
         }
 
-        if (b.cols = 1 && a.rows == b.rows) {
-            let result = _result || Mx.fromDims(a.rows, a.cols)
+        //one matrix has only on col,add columwise
+        if ((a.cols == 1 || b.cols == 1) && (a.rows == b.rows)) {
+            if (a.cols == 1){
+               let temp = a
+               a = b
+               b = temp
+            }
 
+            let result = Mx.fromDims(a.rows, a.cols)
             for (let row = 0; row < a.rows; row++) {
                 for (let col = 0; col < a.cols; col++) {
                     result.array[a.cols * row + col] = a.array[a.cols * row + col] + b.array[row]
                 }
             }
-
             return result
         }
-
-        throw "Matrices are not compatiable"
-
-
+        throw "Matrices are not compatatible";
     }
 
 
-    static sub(a, b, result) {
-        if (a.rows != b.rows || a.cols != b.cols) {
-            throw "Cannot subtract matrices of unequal dimension"
-        }
-        if (result == null) {
-            var result = Mx.fromDims(a.rows, a.cols)
-        } else {
-            if (result.rows != a.rows || result.cols != a.cols) {
-                throw "Result matrix is not proper dimensions"
+    static sub(a, b) {
+        if (a.rows == b.rows && a.cols == b.cols) {
+            let result = Mx.fromDims(a.rows, a.cols)
+            for (let i = 0; i < a.rows * a.cols; i++) {
+                result.array[i] = a.array[i] - b.array[i]
             }
+            return result
         }
-
-
-        for (let i = 0; i < a.rows * a.cols; i++) {
-            result.array[i] = a.array[i] - b.array[i]
-        }
-        return result
+        throw "Matrices are not compatatible";
     }
 
-    static multiplyElems(a, b, result) {
-        if (a.rows != b.rows || a.cols != b.cols) {
-            throw "Cannot perform elementwise multiplication matrices of unequal dimension"
-        }
-        if (result == null) {
-            var result = Mx.fromDims(a.rows, a.cols)
-        } else {
-            if (result.rows != a.rows || result.cols != a.cols) {
-                throw "Result matrix is not proper dimensions"
+    static multiplyElems(a, b) {
+        if (a.rows == b.rows && a.cols == b.cols) {
+            let result = Mx.fromDims(a.rows, a.cols)
+            for (let i = 0; i < a.rows * a.cols; i++) {
+                result.array[i] = a.array[i] * b.array[i]
             }
+            return result
         }
-
-        for (let i = 0; i < a.rows * a.cols; i++) {
-            result.array[i] = a.array[i] * b.array[i]
-        }
-        return result
+        throw "Matrices are not compatatible";
     }
 
-
-    static scale(matrix, scale, result) {
-        if (result == null) {
-            var result = Mx.fromDims(matrix.rows, matrix.cols)
-        } else {
-            if (result.rows != a.rows || result.cols != a.cols) {
-                throw "Result matrix is not proper dimensions"
-            }
-        }
-
+    static scale(matrix, scale) {
+        let result = Mx.fromDims(matrix.rows, matrix.cols)
         for (let i = 0; i < matrix.rows * matrix.cols; i++) {
             result.array[i] = matrix.array[i] * scale
         }
@@ -146,54 +124,32 @@ export class Mx {
     }
 
     static multiply(a, b, result) {
-        if (a.cols != b.rows) {
-            console.trace()
-            throw "matrix 1 cols not equal to matrix 2 rows"
-        }
-        if (result == null) {
-            var result = Mx.fromDims(a.rows, b.cols)
-        } else {
-            if (result.rows != a.rows || result.cols != b.cols) {
-                throw "Result matrix is not proper dimensions"
-            }
-        }
-
-        for (let row = 0; row < a.rows; row++) {
-            for (let col = 0; col < b.cols; col++) {
-                let sum = 0
-                for (let k = 0; k < a.cols; k++) {
-                    sum += a.array[row * a.cols + k] * b.array[k * b.cols + col]
-                }
+        if (a.cols == b.rows) {
+            let result = Mx.fromDims(a.rows, b.cols)
+            for (let row = 0; row < a.rows; row++) {
+                for (let col = 0; col < b.cols; col++) {
+                    let sum = 0
+                    for (let k = 0; k < a.cols; k++) {
+                        sum += a.array[row * a.cols + k] * b.array[k * b.cols + col]
+                    }
                 result.array[b.cols * row + col] = sum
+                }
             }
+            return result
         }
-        return result
+        throw "Matrices are not compatatible";
     }
 
-    static map(input, f, result) {
-        if (result == null) {
-            var result = Mx.fromDims(input.rows, input.cols)
-        } else {
-            if (result.rows != a.rows || result.cols != b.cols) {
-                throw "Result matrix is not proper dimensions"
-            }
-        }
-
+    static map(input, f) {
+        let result = Mx.fromDims(input.rows, input.cols)
         for (let i = 0; i < input.array.length; i++) {
             result.array[i] = f(input.array[i])
         }
         return result
     }
 
-    static transpose(input, result) {
-        if (result == null) {
-            var result = Mx.fromDims(input.cols, input.rows)
-        } else {
-            if (result.rows != a.rows || result.cols != b.cols) {
-                throw "Result matrix is not proper dimensions"
-            }
-        }
-
+    static transpose(input) {
+        let  result = Mx.fromDims(input.cols, input.rows)
         for (let row = 0; row < input.rows; row++) {
             for (let col = 0; col < input.cols; col++) {
                 result.array[col * input.rows + row] = input.array[row * input.cols + col]
@@ -202,23 +158,47 @@ export class Mx {
         return result
     }
 
-    static mean(input) {
-        let size = input.rows * input.cols
-        let sum = 0
-        for (let i = 0; i < size; i++) {
-            sum += input.array[i]
-        }
-        return sum / size
+ 
+    static sum(input, axis) {
+        if (axis == undefined){
+            let sum = 0
+            for (let i = 0; i < input.rows * input.cols; i++) {
+                sum += input.array[i]
+            }
+            return sum
+        } else if (axis == "cols"){
+            let sum = Mx.fromDims(1, input.cols)
+            for (let row = 0; row < input.rows; row++) {
+                for (let col = 0; col < input.cols; col++) {
+                    sum.array[col] += input.array[input.cols * row + col] 
+                }
+            }
+            return sum
+        } else if (axis == "row"){
+            let sum = Mx.fromDims(input.rows, 1)
+            for (let row = 0; row < input.rows; row++) {
+                for (let col = 0; col < input.cols; col++) {
+                    sum.array[row] += input.array[input.cols * row + col] 
+                }
+            }
+            return sum
+        }  
     }
 
-    static sum(input) {
-
-        let sum = 0
+    static max(input) {
+        let max = input.array[0]
         for (let i = 0; i < input.rows * input.cols; i++) {
-            sum += input.array[i]
+            if (input.array[i] > max) {
+                max = input.array[i]
+            }
         }
-        return sum
+        return max
     }
+
+    static mean(input) {
+        return this.sum(input) / input.array.length
+    }
+
 
     static rowSum(input) {
 
@@ -229,7 +209,6 @@ export class Mx {
                 sum.array[row] += input.array[input.cols * row + col] 
             }
         }
-
         return sum
     }
 
@@ -242,7 +221,6 @@ export class Mx {
                 sum.array[col] += input.array[input.cols * row + col] 
             }
         }
-
         return sum
     }
 
@@ -258,16 +236,5 @@ export class Mx {
     }
 
 
-    static max(input) {
-
-        let max = input.array[0]
-        for (let i = 0; i < input.rows * input.cols; i++) {
-            if (input.array[i] > max) {
-                max = input.array[i]
-            }
-        }
-        return max
-    }
-
-
+   
 }
