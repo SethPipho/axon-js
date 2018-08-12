@@ -1,21 +1,21 @@
 import {Mx} from "./matrix.js"
 
 export const ActivationFunctions = {
-     'sigmoid': function (input, derivative) {
+     sigmoid: function (input, derivative) {
         if (derivative) {
             return Mx.map(input, (x) => x * (1 - x))
         }
         return Mx.map(input, (x) => 1 / (1 + Math.pow(Math.E, -x)))
     },
 
-    'relu': function (input, derivative) {
+    relu: function (input, derivative) {
         if (derivative) {
             return Mx.map(input, (x) => (x > 0) ? 1 : 0)
         }
         return Mx.map(input, (x) => (x > 0) ? x : 0, 6)
     },
 
-    'softmax': function (input, derivative) {
+    softmax: function (input, derivative) {
         if (derivative) {
             return Mx.map(input, (x) => x * (1 - x))
         }
