@@ -12,20 +12,25 @@
       background-color: rgba(255, 107, 107, 1.0);
       border: none;
     }
+
+    .container {
+      margin: auto;
+      padding-top:50px;
+      width: 500px;
+    }
   </style>
   <title>Digit Recognizer</title>
 </head>
 
 <body>
-  <h4> Draw a Digit 0-9 </h4>
-  <canvas id="canvas"></canvas>
-  <canvas id="preview"></canvas>
-  <h1 style="display:inline;"> &rarr; <span id="predict-span">0</span> </h1> <br> 
-  <button id="predict-btn"> Predict </button> 
-  <button id="clear-btn"> Clear </button>  
-
-  <div id="hidden-layer"></div>
-  
+  <div class="container">
+      <h4> Draw a Digit 0-9 </h4>
+      <canvas id="canvas"></canvas>
+      <canvas id="preview"></canvas>
+      <h1 style="display:inline;"> &rarr; <span id="predict-span">0</span> </h1> <br> 
+      <button id="predict-btn"> Predict </button> 
+      <button id="clear-btn"> Clear </button>  
+  </div>
   <script src="../../build/axon.build.js"></script>
   <script src="main.js"></script>
 </body>
